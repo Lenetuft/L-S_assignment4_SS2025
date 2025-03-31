@@ -99,7 +99,17 @@ Don't forget encodeURIComponent()
 If no cocktails found, fetch random
 */
 function fetchCocktailByDrinkIngredient(drinkIngredient) {
-    // Fill in
+    return fetch (`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${drinkIngredient}`)
+      .then(response=>response.json)
+      .then(data=>{
+        if (data.drinks && data.drinks.length > 0) {
+          const randomCocktail = data.drinks[Math.floor(Math.random()* data.drinks.length)];
+          return randomCocktail;
+        } else {
+          return fetchRandomCocktail
+        }
+      })
+      .catch(error => console.error("Error fetching cocktail:", error));
 }
 
 /*
