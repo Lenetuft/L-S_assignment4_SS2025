@@ -106,7 +106,7 @@ function fetchCocktailByDrinkIngredient(drinkIngredient) {
           const randomCocktail = data.drinks[Math.floor(Math.random()* data.drinks.length)];
           return randomCocktail;
         } else {
-          return fetchRandomCocktail
+          return fetchRandomCocktail();
         }
       })
       .catch(error => console.error("Error fetching cocktail:", error));
@@ -117,7 +117,10 @@ Fetch a Random Cocktail (backup in case nothing is found by the search)
 Returns a Promise that resolves to cocktail object
 */
 function fetchRandomCocktail() {
-    // Fill in
+    return fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=DRINK_INGREDIENT`)
+      .then(response=>response.json)
+      .then(data=>data.drinks[0])
+      .catch(error=>console.error("Error fetching cocktail:", error));
 }
 
 /*
