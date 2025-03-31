@@ -70,17 +70,17 @@ Receives a meal object with fields like:
 function displayMealData(meal) {
   const mealContainer = document.getElementById('meal-container');
   mealContainer.innerHTML =`
-      <p>${meal.strMeal}</p>
+      <h2>${meal.strMeal}</h2>
       <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
-      ${meal.strCategory}
-      <p>Ingredients:</p>
+      <p><strong>Category:</strong> ${meal.strCategory}</p>
+      <h3>Ingredients:</h3>
       <ul>
         ${getIngredientsList(meal).map(ingredient => `<li>${ingredient}</li>`).join('')}
       </ul>
-      <p>Instructions:</p>
+      <h3>Instructions:</h3>
       <p>${meal.strInstructions}</p>
     `;
-}
+  }
 
 /*
 Convert MealDB Category to a TheCocktailDB Spirit
