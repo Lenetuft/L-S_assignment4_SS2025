@@ -49,7 +49,16 @@ function init() {
  Returns a Promise that resolves with the meal object
  */
 function fetchRandomMeal() {
-    // Fill in
+  return fetch('https://www.themealdb.com/api/json/v1/1/random.php')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data); //Sjå innhaldet i meals-api
+    return data.meals[0];
+  })
+  .catch (error => {
+    console.error('Feilmelding:', error) //Usikker på om me skal ha med feilmeldingar.
+  })
+
 }
 
 /*
@@ -59,7 +68,18 @@ Receives a meal object with fields like:
   strIngredientX, strMeasureX, etc.
 */
 function displayMealData(meal) {
-    // Fill in
+  const mealContainer = document.getElementById('meal-container');
+  mealContainer.innerHTML =`
+      <p>${meal.strMeal}</p>
+      <img src="${meal.strMealThumb}" alt="${meal.strMeal}">
+      ${meal.strCategory}
+      <p>Ingredients:</p>
+      <ul>
+        ${getIngredientsList(meal).map(ingredient => `<li>${ingredient}</li>`).join('')}
+      </ul>
+      <p>Instructions:</p>
+      <p>${meal.strInstructions}</p>
+    `;
 }
 
 /*
