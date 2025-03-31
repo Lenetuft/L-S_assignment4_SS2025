@@ -151,4 +151,17 @@ function displayCocktailData(cocktail) {
 /*
 Call init() when the page loads
 */
+
+function init() {
+  fetchRandomMeal()
+      .then(meal => {
+          displayMealData(meal);
+          const mealCategory = meal.strCategory; 
+          const drinkIngredient = mapMealCategoryToDrinkIngredient(mealCategory);
+          return fetchCocktailByDrinkIngredient(drinkIngredient);
+      })
+      .then(displayCocktailData)
+      .catch(error => console.error("Error:", error));
+}
+
 window.onload = init;
