@@ -161,7 +161,6 @@ function init() {
           return fetchCocktailByDrinkIngredient(drinkIngredient);
       })
       .then(displayCocktailData)
-      .catch(error => console.error("Error:", error));
 }
 
 window.onload = init;
