@@ -67,6 +67,10 @@ Receives a meal object with fields like:
   strMeal, strMealThumb, strCategory, strInstructions,
   strIngredientX, strMeasureX, etc.
 */
+
+
+// MÅ FJERNE ELEMENTER SOM ER KNYTTET TIL INGREDIENSER SOM LENE PRØVDE I EGEN FUNKSJON I EGEN FIL. 
+// PROBLEM MED getIngredientsList. 
 function displayMealData(meal) {
   const mealContainer = document.getElementById('meal-container');
   mealContainer.innerHTML =`
@@ -81,7 +85,17 @@ function displayMealData(meal) {
       <p>${meal.strInstructions}</p>
     `;
   }
-
+  function getIngredientsList(meal) {
+    const ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+      const ingredient = meal[`strIngredient${i}`];
+      const measure = meal[`strMeasure${i}`];
+      if (ingredient) {
+        ingredients.push(`${ingredient} - ${measure}`);
+      }
+    }
+    return ingredients;
+  }
 /*
 Convert MealDB Category to a TheCocktailDB Spirit
 Looks up category in our map, or defaults to 'cola'
@@ -99,8 +113,8 @@ Don't forget encodeURIComponent()
 If no cocktails found, fetch random
 */
 function fetchCocktailByDrinkIngredient(drinkIngredient) {
-    return fetch (`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${drinkIngredient}`)
-      .then(response=>response.json)
+    return fetch (`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=${encodeURIComponent(drinkIngredient)}`)
+      .then(response=>response.json())
       .then(data=>{
         if (data.drinks && data.drinks.length > 0) {
           const randomCocktail = data.drinks[Math.floor(Math.random()* data.drinks.length)];
@@ -117,8 +131,8 @@ Fetch a Random Cocktail (backup in case nothing is found by the search)
 Returns a Promise that resolves to cocktail object
 */
 function fetchRandomCocktail() {
-    return fetch(`https://www.thecocktaildb.com/api/json/v1/1/search.php?s=DRINK_INGREDIENT`)
-      .then(response=>response.json)
+    return fetch('https://www.thecocktaildb.com/api/json/v1/1/random.php') //Skifta api-adresse
+      .then(response=>response.json())
       .then(data=>data.drinks[0])
       .catch(error=>console.error("Error fetching cocktail:", error));
 }
@@ -126,6 +140,8 @@ function fetchRandomCocktail() {
 /*
 Display Cocktail Data in the DOM
 */
+
+//Manglar category og instructions: 
 function displayCocktailData(cocktail) {
     const cocktailContainer = document.getElementById("cocktail-container");
     if(!cocktail) {
@@ -142,25 +158,29 @@ function displayCocktailData(cocktail) {
     }
     cocktailContainer.innerHTML = `
     <h2>${strDrink}</h2>
-    <img src="${strDrinkThumb}" alt="${strDrink}" width="200">
+    <img src="${strDrinkThumb}" alt="${strDrink}">
+    <p><strong>Category:</strong> ${cocktail.strCategory}</p> 
     <h3>Ingredients:</h3>
     <ul>${Ingredients.map(ing => `<li>${ing}</li>`).join('')}</ul>
+    <h3>Instructions:</h3>
+    <p>${cocktail.strInstructions}</p>
   `;
 }
 
 /*
 Call init() when the page loads
 */
+//TRUR IKKJE ME TRENG DETTE: 
 
-function init() {
-  fetchRandomMeal()
-      .then(meal => {
-          displayMealData(meal);
-          const mealCategory = meal.strCategory; 
-          const drinkIngredient = mapMealCategoryToDrinkIngredient(mealCategory);
-          return fetchCocktailByDrinkIngredient(drinkIngredient);
-      })
-      .then(displayCocktailData)
-}
+// function init() {
+//   fetchRandomMeal()
+//       .then(meal => {
+//           displayMealData(meal);
+//           const mealCategory = meal.strCategory; 
+//           const drinkIngredient = mapMealCategoryToDrinkIngredient(mealCategory);
+//           return fetchCocktailByDrinkIngredient(drinkIngredient);
+//       })
+//       .then(displayCocktailData)
+// }
 
 window.onload = init;

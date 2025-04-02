@@ -4,6 +4,7 @@ body {
   grid-template-rows: 100px auto;
   font-family: sans-serif;
   margin: 20px;
+  gap: 16px;
 }
 #title {
   grid-column: span 2;
@@ -11,14 +12,16 @@ body {
 }
 .meal,
 .cocktail {
-  border: 1px solid #ccc;
+  border: 1px #ccc;
   padding: 15px;
   margin-bottom: 20px;
   border-radius: 8px;
+  background-color: rgb(215, 250, 231);
 }
 .meal img,
 .cocktail img {
   max-width: 250px;
   display: block;
   margin-top: 10px;
+  border-radius: 5px;
 }
